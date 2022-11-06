@@ -6,6 +6,11 @@ const exphbs = require('express-handlebars')
 const methodOverride = require("method-override") // 載入methodOverride
 const flash = require('connect-flash')   // 引用connect-flash套件
 
+// 判別開發環境
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
+
 const routes = require('./routes')// 引用路由器
 
 // 載入設定檔，要寫在 express-session 以後
@@ -16,7 +21,7 @@ require("./config/mongoose") // 引用mongoose
 const bodyParser = require('body-parser') // 引用 body-parser
 
 const app = express()
-const port = 3000 // 設定預設port
+const PORT = process.env.PORT
 
 // 設定handlebars引擎
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
@@ -27,7 +32,7 @@ app.use(express.static('public'))
 
 // 使用 app.use() 註冊套件，並使用 session(option) 來設定相關選項
 app.use(session({
-  secret: 'ThisIsMySecret',
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true
 }))
@@ -63,6 +68,6 @@ app.use((req, res, next) => {
 app.use(routes)
 
 // 設置監聽器
-app.listen(port, () => {
-  console.log(`Listening on http://localhost:${port}`)
+app.listen(PORT, () => {
+  console.log(`Listening on http://localhost:${PORT}`)
 })
