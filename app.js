@@ -1,5 +1,7 @@
 // 載入express、express-handlebars
 const express = require('express')
+// 載入 express-session
+const session = require('express-session')
 const exphbs = require('express-handlebars')
 const methodOverride = require("method-override") // 載入methodOverride
 
@@ -17,6 +19,14 @@ app.set('view engine', 'handlebars')
 
 // 設定靜態檔案位置
 app.use(express.static('public'))
+
+// 使用 app.use() 註冊套件，並使用 session(option) 來設定相關選項
+app.use(session({
+  secret: 'ThisIsMySecret',
+  resave: false,
+  saveUninitialized: true
+}))
+
 
 // 用 app.use 規定每一筆請求都需要透過 body-parser 進行前置處理
 app.use(bodyParser.urlencoded({ extended: true }))
