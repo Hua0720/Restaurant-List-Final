@@ -5,14 +5,22 @@ const router = express.Router()
 // 引入建立好的 User model
 const User = require('../../models/user')
 
+// 引用 passport
+const passport = require('passport')
+
 // 用get加入一條「登入表單頁面」的路由， 再用render匯出路由模組
 router.get('/login', (req, res) => {
   res.render('login')
 })
 
 // 用post加入一條「login登入進去」的路由
-router.post('/login', (req, res) => {
-})
+// 加入 middleware(中介軟體)，驗證 request 登入狀態
+router.post('/login', passport.authenticate('local', {
+  // 成功重定向 '路由'
+  successRedirect: '/',
+  // 失敗重定向 '登入畫面'
+  failureRedirect: '/users/login'
+}))
 
 // 用get加入一條「註冊頁面」的路由， 再用render匯出路由模組
 router.get('/register', (req, res) => {

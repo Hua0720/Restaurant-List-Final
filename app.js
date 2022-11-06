@@ -6,6 +6,10 @@ const exphbs = require('express-handlebars')
 const methodOverride = require("method-override") // 載入methodOverride
 
 const routes = require('./routes')// 引用路由器
+
+// 載入設定檔，要寫在 express-session 以後
+const usePassport = require('./config/passport')
+
 require("./config/mongoose") // 引用mongoose
 
 const bodyParser = require('body-parser') // 引用 body-parser
@@ -33,6 +37,9 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 // 設定每一筆請求都會透過 methodOverride 進行前置處理
 app.use(methodOverride('_method'))
+
+// 呼叫 Passport 函式並傳入 app
+usePassport(app)
 
 // 將 request 導入路由器
 app.use(routes)
