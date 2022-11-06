@@ -9,9 +9,11 @@ const sorting = require('../../utilities/sort')
 
 // 設定路由
 router.get('/', (req, res) => {
+  const userId = req.user._id   // 變數設定
   // 拿餐廳資料
-  Restaurant.find({})
+  Restaurant.find({ userId }) // 加入查詢條件
     .lean()
+    .sort({ _id: 'asc' })
     .then(restaurants => res.render("index", { restaurants }))
     .catch(err => console.log(err))
 })
