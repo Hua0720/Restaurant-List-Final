@@ -31,13 +31,31 @@ router.get('/register', (req, res) => {
 router.post('/register', (req, res) => {
   // 取得註冊表單參數 {} -> 放入物件，解構賦值語法
   const { name, email, password, confirmPassword } = req.body
+  // 新增碰到錯誤時的陣列
+  const errors = []
+
+  if (!email || !password || !confirmPassword) {
+    errors.push({ message: '除了名字外，其餘欄位都是必填。' })
+  }
+  if (password !== confirmPassword) {
+    errors.push({ message: '密碼與確認密碼不相符！' })
+  }
+  if (errors.length) {
+    return res.render('register', {
+      errors,
+      name,
+      email,
+      password,
+      confirmPassword
+    })
+  }
   // 檢查使用者是否已經註冊(用email為基準) ， findOne 為 mongoose 語法
   User.findOne({ email }).then(user => {
     // 如果已經註冊：退回原本畫面
     if (user) {
-      console.log('User already exists.')
-      // 放入name, email, password, confirmPassword，是為了頁面退回後保留原本key in好的資料
-      res.render('register', {
+      errors.push({ message: '這個 Email 已經註冊過了。' })
+      return res.render('register', {
+        errors,
         name,
         email,
         password,
@@ -58,9 +76,12 @@ router.post('/register', (req, res) => {
 })
 
 // 設定登出路由
-router.get('/logout', (req, res) => {
-  req.logout()
-  res.redirect('/users/login')
+router.get('/logout', function (req, res, next) {
+  req.logout(function (err) {
+    if (err) { return next(err); }
+    req.flash('success_msg', '你已經成功登出。')
+    res.redirect('/users/login')
+  })
 })
 
 module.exports = router
