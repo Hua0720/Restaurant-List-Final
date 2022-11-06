@@ -2,10 +2,10 @@
 使用node.js製作的餐廳清單。
 
 ### 登入畫面
-![登入畫面](https://github.com/Hua0720/Restaurant-List-refactoring/blob/main/public/img/login.jpg)
+![登入畫面](https://github.com/Hua0720/Restaurant-List-Final/blob/main/public/img/login.jpg)
 
 ### 使用者登入畫面
-![使用者登入畫面](https://github.com/Hua0720/Restaurant-List-refactoring/blob/main/public/img/loginpage.jpg)
+![使用者登入畫面](https://github.com/Hua0720/Restaurant-List-Final/blob/main/public/img/loginpage.jpg)
 
 
 ### 功能描述
